@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VOLSTEAD</title>
+	<script type="text/javascript" src="jquery/jquery-1.8.2.min.js"></script>
+	<script>
+	var width = $(window).width();
+	var height = $(window).height();
+	var maxCol = parseInt(width/50);
+	var maxRow = parseInt(height/50)+1;
+
+	$(function(){
+		genRecs();
+		setInterval(function(){moveLogo()},tiempo=generaTiempo(100));
+		setInterval(function(){prueba();},tiempo=generaTiempo(240000));
+	})
+
+	function prueba(){
+		$(".rec").css("background-color","transparent");
+		color = genColor();
+		console.log("start: "+color);
+		var anim=setInterval(function(){setBgColor(color)},tiempo=generaTiempo(1000));
+		return anim;
+	}
+	
+
+	function genRecs(){
+		var string ="";
+
+		for ( var row = 0; row < (maxRow); row++ ) {
+			for ( var col = 0; col < (maxCol); col++ ) {
+				string += "<div class=\"rec\" id=\"rec"+("0"+row).slice(-2)+("0"+col).slice(-2)+"\"></div>";
+			}
+			string += "<div class=\"clear\"></div>";
+		}
+
+		$("#content").html(string);
+	}
+
+	function generaTiempo(factor){
+		var tiempo=Math.floor((Math.random()*factor));
+		return tiempo;
+	}
+
+	function genColor(){
+		$(".rec").css("background-color","transparent");
+		var colores = new Array("#33FF00","#FFCC00","#FF0000","#FFFFFF","transparent");
+		var index=parseInt(Math.floor((Math.random()*5)));
+		return colores[index];
+	}
+
+	function setBgColor(color){
+		var row = ("0"+parseInt(Math.random()*maxRow)).slice(-2);
+		var col = ("0"+parseInt(Math.random()*maxCol)).slice(-2);
+		var rec = $("#rec"+row+col);
+		rec.css('display',"none");
+		rec.css("opacity",Math.random()*1);
+		// rec.css("background-color","#33FF00");
+		rec.css("background-color",color);
+		rec.fadeIn('slow');
+	}
+
+	function moveLogo(){
+		$("#logo").each(function(el){
+			var plusOrMinus = Math.random() < 0.5 ? "+" : "-";
+			if(parseInt((Math.random() * 10)) == 6)
+				$(this).css('display','none');
+			else
+				$(this).css('display','inherit');
+			$(this).css('left', 'calc(25% '+plusOrMinus+' '+Math.random()*5+'px)');
+			$(this).css('top', 'calc(35% '+plusOrMinus+' '+Math.random()*5+'px)');
+		});
+	}
+	</script>
+
+	<style>
+	body{
+		background-color: #000000;
+		text-align: center;
+		margin: 0px;
+		overflow: hidden;
+	}
+
+	img{
+		max-width: 50%;
+		position: absolute;
+		top: 35%;
+		left:26%;
+		right:26%;
+	}
+
+	div.rec{
+		float:left;
+		height: 50px;
+		width: 50px;
+	}
+	div.clear{
+		clear: left;
+	}
+
+}
+
+</style>
+</head>
+<body>
+	<div id="content"></div>
+	<!-- <img class="logoback" src="logoblue.png"> -->
+	<!-- <img class="logoback" src="logored.png"> -->
+	<!-- <img class="logoback" src="logo.png"> -->
+	<img id="logo" src="logowhite.png">
+	<!-- <img id="logo" src="logo.png"> -->
+</body>
+</html>
